@@ -11,10 +11,14 @@
         <button @click="navigate" role="link" class="login_button">Login</button>
       </RouterLink>
 
+      <RouterLink to="/register" custom v-slot="{ navigate }">
+        <button @click="navigate" role="link" class="register_button">Register</button>
+      </RouterLink>
+
       <a href="https://www.instagram.com/" target="_blank"><i class="icons fa-brands fa-instagram"></i></a>
       <a href="https://www.linkedin.com/" target="_blank"><i class="icons fa-brands fa-linkedin"></i></a>
       <a href="https://www.twitter.com/" target="_blank"><i class="icons fa-brands fa-twitter"></i></a>
-      
+
     </div>
 
     <div class="header_banner">
@@ -49,7 +53,8 @@ button {
   border-radius: 10px;
 }
 
-.login_button {
+.login_button,
+.register_button {
   height: 50px;
   width: 90px;
   margin-right: 10px;

@@ -3,6 +3,7 @@ import RootView from "../views/RootView.vue";
 import LoginView from "../views/LoginView.vue";
 import PurchaseView from "../views/PurchaseView.vue";
 import CartView from "../views/CartView.vue";
+import RegisterView from "../views/RegisterView.vue";
 
 const routes = [
   {
@@ -18,8 +19,12 @@ const routes = [
     component: PurchaseView,
   },
   {
-    path: "/Cart",
+    path: "/cart",
     component: CartView,
+  },
+  {
+    path: "/register",
+    component: RegisterView,
   },
 ];
 

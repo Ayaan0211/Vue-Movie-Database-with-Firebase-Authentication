@@ -38,8 +38,15 @@ const login = () => {
       </div>
     </form>
 
-    <div v-if="error">
-      <p>Incorrect Username/Password!</p>
+    <div v-if="error" class="incorrect">
+      <p class="incorrect_text">Incorrect Username/Password!</p>
+    </div>
+
+    <div class="register">
+      <p class="not_user">Not a User?</p>
+      <RouterLink to="/register" custom v-slot="{ navigate }">
+        <p @click="navigate" role="link" class="register_now">Register Now</p>
+      </RouterLink>
     </div>
   </div>
 
@@ -47,8 +54,8 @@ const login = () => {
 
 <style scoped>
 .container {
-  width: 25rem;
-  height: 25rem;
+  width: 27rem;
+  height: 27rem;
   border: 5px solid black;
   padding: 55px 85px 85px 85px;
   text-align: center;
@@ -81,8 +88,37 @@ const login = () => {
   width: 90px;
   height: 40px;
   border-radius: 10px;
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   cursor: pointer;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.incorrect {
+  padding-top: 1rem;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.incorrect_text {
+  text-align: center;
+}
+
+.register {
+  padding-top: 3rem;
+}
+
+.not_user {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.2rem;
+}
+
+.register_now {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>
