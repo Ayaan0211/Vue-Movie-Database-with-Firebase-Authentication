@@ -2,10 +2,14 @@
 import { useStore } from "../store/index.js";
 import { ref } from 'vue';
 import SiteModal from "../components/SiteModal.vue"
+import axios from "axios";
 
 const store = useStore();
-await store.getMovies();
-
+const genre = ref();
+const criteria = ref("");
+const searchResults = ref([]);
+const page = ref(1);
+const totalPages = ref(0);
 const showModal = ref(false);
 const selectedId = ref(0);
 
@@ -17,6 +21,37 @@ const openModal = (id) => {
 const closeModal = () => {
   showModal.value = false;
 };
+
+const getGenres = async () => {
+  searchResults.value = [];
+  criteria.value = "";
+  await store.getMovies(genre.value);
+};
+
+const search = async (direction) => {
+  page.value += direction
+  let data = (
+    await axios.get("https://api.themoviedb.org/3/search/movie", {
+      params: {
+        api_key: "1c54b96f434d2541d0e6ee64a16e8cb2",
+        query: criteria.value,
+        include_adult: false,
+        page: page.value,
+      }
+    })
+  ).data;
+
+  totalPages.value = data.total_pages;
+
+  searchResults.value = data.results.map((movie) => {
+    return {
+      id: movie.id,
+      poster: movie.poster_path,
+    };
+  });
+};
+
+// await store.populateFirestore();
 </script>
 
 <template>
@@ -40,14 +75,60 @@ const closeModal = () => {
       </div>
     </RouterLink>
 
+    <div class="searchbar">
+      <input type="search" placeholder="Search for a movie.." v-model="criteria" @keydown.enter="search(0)" />
+    </div>
+
+    <div class="dropdown">
+      <label for="genre_dropdown"></label>
+      <select name="genre" id="dropdown_menu" v-model="genre" @change="getGenres()">
+        <option value="blank"></option>
+        <option value="Actions">Action</option>
+        <option value="Animation">Animation</option>
+        <option value="Crime">Crime</option>
+        <option value="Family">Family</option>
+        <option value="Science Fiction">Science Fiction</option>
+      </select>
+    </div>
+
+    <template v-if="searchResults.length">
+      <div class="navigation">
+        <button v-show="page > 1" @click="search(-1)">Prev</button>
+        <h1>{{ `Page ${page} of ${totalPages}` }}</h1>
+        <button v-show="page < totalPages" @click="search(1)">Next</button>
+      </div>
+    </template>
+
+    <!-- <div class="purchase-container">
+      <template v-if="searchResults.length">
+        <img v-for="movie in searchResults" :id="movie.id" @click="openModal(movie.id)"
+          :src="`https://image.tmdb.org/t/p/w500${movie.poster}`" />
+      </template>
+      <template v-else>
+        <img v-for="movie in store.movies" :id="movie.id" @click="openModal(movie.id)"
+          :src="`https://image.tmdb.org/t/p/w500${movie.poster}`" />
+      </template>
+      <SiteModal v-if="showModal" @toggleModal="closeModal()" :id="selectedId" />
+    </div> -->
+
   </div>
 
   <div class="movie_container">
 
     <div class="movie_gallery">
 
-      <img v-for="movie in store.movieData" :src="`https://image.tmdb.org/t/p/w500${movie.poster}`" alt=""
-        @click="openModal(movie.id)" class="movie" />
+      <template v-if="searchResults.length">
+        <img v-for="movie in searchResults" :id="movie.id" @click="openModal(movie.id)"
+          :src="`https://image.tmdb.org/t/p/w500${movie.poster}`" class="movie"/>
+      </template>
+      <template v-else>
+        <img v-for="movie in store.movies" :id="movie.id" @click="openModal(movie.id)"
+          :src="`https://image.tmdb.org/t/p/w500${movie.poster}`" class="movie"/>
+      </template>
+      <SiteModal v-if="showModal" @toggleModal="closeModal()" :id="selectedId" />
+
+      <img v-for="movie in store.movieData" :id="movie.id" @click="openModal(movie.id)"
+        :src="`https://image.tmdb.org/t/p/w500${movie.poster}`" alt="" class="movie" />
 
     </div>
 
