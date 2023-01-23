@@ -13,30 +13,20 @@ const username = ref("");
 const password = ref("");
 const error = ref(false);
 
-const loginWithEmail = async () => {
-  if (!password) {
-    console.log("Password issue");
-    return;
-  }
-  else {
-    router.push("./purchase")
+const login = async () => {
+  try {
+    await signInWithEmailAndPassword(auth, username.value, password.value);
+    router.push("./purchase");
+  } catch {
+    error.value = true;
   }
 };
-
-const registerUserByGoogle = async () => {
+const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   const user = await signInWithPopup(auth, provider);
-  console.log(user);
-  router.push("./purchase")
-};
+  router.push('/purchase');
+}
 
-// const login = () => {
-//   if (username.value === "tmdb" && password.value === "movies") {
-//     router.push("./purchase");
-//   } else {
-//     error.value = true;
-//   }
-// };
 </script>
 
 <template>
@@ -53,7 +43,7 @@ const registerUserByGoogle = async () => {
       <h1>Login</h1>
     </div>
 
-    <form @submit.prevent="loginWithEmail()">
+    <form @submit.prevent="login()">
       <div class="login_info">
         <input type="text" placeholder="Username" v-model="username" class="username" />
         <input type="password" placeholder="Password" v-model="password" class="password" />
@@ -63,12 +53,8 @@ const registerUserByGoogle = async () => {
       </div>
     </form>
 
-    <div v-if="error" class="incorrect">
-      <p class="incorrect_text">Incorrect Username/Password!</p>
-    </div>
-
     <div class="google_icon">
-      <i class="fa-brands fa-google" @click="registerUserByGoogle"></i>
+      <i class="fa-brands fa-google" @click="loginWithGoogle"></i>
     </div>
 
     <div class="register">
@@ -77,20 +63,24 @@ const registerUserByGoogle = async () => {
         <p @click="navigate" role="link" class="register_now">Register Now</p>
       </RouterLink>
     </div>
+
+    <div v-if="error" class="incorrect">
+      <p class="incorrect_text">Incorrect Username/Password!</p>
+    </div>
   </div>
 
 </template>
 
 <style scoped>
-
 .google_icon {
   padding-top: 1.5rem;
   font-size: 2rem;
   cursor: pointer;
 }
+
 .container {
   width: 30rem;
-  height: 30rem;
+  height: 31rem;
   border: 5px solid black;
   padding: 55px 85px 85px 85px;
   text-align: center;
@@ -129,7 +119,8 @@ const registerUserByGoogle = async () => {
 }
 
 .incorrect {
-  padding-top: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
   position: absolute;
   margin-left: auto;
   margin-right: auto;

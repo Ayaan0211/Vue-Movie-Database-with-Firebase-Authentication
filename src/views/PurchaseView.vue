@@ -8,6 +8,7 @@ const store = useStore();
 const genre = ref("Actions");
 const criteria = ref("");
 const searchResults = ref([]);
+const page = ref(1);
 const totalPages = ref(0);
 const showModal = ref(false);
 const selectedId = ref(0);

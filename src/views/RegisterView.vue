@@ -13,13 +13,12 @@ const username = ref("");
 const email = ref("");
 const password1 = ref("");
 const password2 = ref("");
-// const correct = ref(true);
+const error = ref(false);
 
 const registerUserByEmail = async () => {
   if (password1.value !== password2.value) {
     console.log("Password issue");
-    // console.log(correct);
-    // correct = false;
+    error.value = true;
     return;
   }
   else {
@@ -66,9 +65,9 @@ const registerUserByGoogle = async () => {
       <i class="fa-brands fa-google" @click="registerUserByGoogle"></i>
     </div>
 
-    <!-- <div v-if="correct==false" class="incorrect_container">
+    <div v-if="error" class="incorrect_container">
       <p class="incorrect">Passwords do not match!</p>
-    </div> -->
+    </div>
   </div>
 
 </template>
