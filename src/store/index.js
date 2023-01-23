@@ -40,14 +40,13 @@ export const useStore = defineStore("store", {
         await setDoc(doc(firestore, "Genre", value), { data });
       });
     },
-    async getMovies (genre) {
-      console.log(genre);
-      console.log((await getDoc(doc(firestore, "Genre", genre))).data());
-      this.movieData = (await getDoc(doc(firestore, "Genre", genre))).data().data;
+    async getMovies(genre) {
+      this.movieData = (
+        await getDoc(doc(firestore, "Genre", genre))
+      ).data().data;
     },
     addToCart(id, data) {
       this.cart.set(id, data);
-      // console.log(this.cart);
     },
   },
 });

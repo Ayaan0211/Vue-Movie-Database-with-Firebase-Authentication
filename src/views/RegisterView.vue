@@ -9,15 +9,17 @@ import {
 } from "firebase/auth";
 
 const router = useRouter();
-
 const username = ref("");
 const email = ref("");
 const password1 = ref("");
 const password2 = ref("");
+// const correct = ref(true);
 
 const registerUserByEmail = async () => {
   if (password1.value !== password2.value) {
     console.log("Password issue");
+    // console.log(correct);
+    // correct = false;
     return;
   }
   else {
@@ -53,16 +55,20 @@ const registerUserByGoogle = async () => {
 
     <form @submit.prevent="registerUserByEmail()">
       <div class="login_info">
-        <input v-model="email" type="email" placeholder="Email" class="email"/> 
-        <input v-model="password1" type="password" placeholder="Password" class="password1"/>
-        <input v-model="password2" type="password" placeholder="Re-enter Password"  class="password2"/>
-        <input type="submit" value="Register" class="actual_button" @click=""/>
+        <input v-model="email" type="email" placeholder="Email" class="email" />
+        <input v-model="password1" type="password" placeholder="Password" class="password1" />
+        <input v-model="password2" type="password" placeholder="Re-enter Password" class="password2" />
+        <input type="submit" value="Register" class="actual_button" @click="" />
       </div>
     </form>
 
     <div class="google_icon">
       <i class="fa-brands fa-google" @click="registerUserByGoogle"></i>
     </div>
+
+    <!-- <div v-if="correct==false" class="incorrect_container">
+      <p class="incorrect">Passwords do not match!</p>
+    </div> -->
   </div>
 
 </template>
@@ -82,7 +88,22 @@ const registerUserByGoogle = async () => {
   box-shadow: 0 0 500px #0D1B2A;
 }
 
-.email, .password1, .password2 {
+.incorrect {
+  text-align: center;
+}
+
+.incorrect_container {
+  padding-top: 1rem;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.email,
+.password1,
+.password2 {
   height: 25px;
   margin-bottom: 5px;
 }

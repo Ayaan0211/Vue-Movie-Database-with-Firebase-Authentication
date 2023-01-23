@@ -1,19 +1,42 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import {
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider,
+  signInWithPopup
+} from "firebase/auth";
+import { auth } from "../firebase/index";
+
 
 const router = useRouter();
 const username = ref("");
 const password = ref("");
 const error = ref(false);
 
-const login = () => {
-  if (username.value === "tmdb" && password.value === "movies") {
-    router.push("./purchase");
-  } else {
-    error.value = true;
+const loginWithEmail = async () => {
+  if (!password) {
+    console.log("Password issue");
+    return;
+  }
+  else {
+    router.push("./purchase")
   }
 };
+
+const registerUserByGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  const user = await signInWithPopup(auth, provider);
+  console.log(user);
+  router.push("./purchase")
+};
+
+// const login = () => {
+//   if (username.value === "tmdb" && password.value === "movies") {
+//     router.push("./purchase");
+//   } else {
+//     error.value = true;
+//   }
+// };
 </script>
 
 <template>
@@ -21,6 +44,8 @@ const login = () => {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
   <div class="container">
 
@@ -28,7 +53,7 @@ const login = () => {
       <h1>Login</h1>
     </div>
 
-    <form @submit.prevent="login()">
+    <form @submit.prevent="loginWithEmail()">
       <div class="login_info">
         <input type="text" placeholder="Username" v-model="username" class="username" />
         <input type="password" placeholder="Password" v-model="password" class="password" />
@@ -42,6 +67,10 @@ const login = () => {
       <p class="incorrect_text">Incorrect Username/Password!</p>
     </div>
 
+    <div class="google_icon">
+      <i class="fa-brands fa-google" @click="registerUserByGoogle"></i>
+    </div>
+
     <div class="register">
       <p class="not_user">Not a User?</p>
       <RouterLink to="/register" custom v-slot="{ navigate }">
@@ -53,9 +82,15 @@ const login = () => {
 </template>
 
 <style scoped>
+
+.google_icon {
+  padding-top: 1.5rem;
+  font-size: 2rem;
+  cursor: pointer;
+}
 .container {
-  width: 27rem;
-  height: 27rem;
+  width: 30rem;
+  height: 30rem;
   border: 5px solid black;
   padding: 55px 85px 85px 85px;
   text-align: center;
@@ -107,7 +142,7 @@ const login = () => {
 }
 
 .register {
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 .not_user {

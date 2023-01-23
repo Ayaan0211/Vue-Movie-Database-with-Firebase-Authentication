@@ -22,7 +22,7 @@ const getMovie = async () => {
 };
 
 getMovie();
-await store.getMovies();
+// await store.getMovies();
 </script>
 
 <template>
@@ -40,7 +40,7 @@ await store.getMovies();
         <button class="close-button" @click="emits('toggleModal')">X</button>
 
         <div class="poster" v-if="movieData">
-          <img class="movie_poster" :src="`https://image.tmdb.org/t/p/w500${movieData.poster_path}`" alt="" />
+          <img class="movie_poster" :src="`https://image.tmdb.org/t/p/w500${movieData.poster_path}`" alt="image is unavailable" />
         </div>
 
         <div class="information" v-if="movieData">
@@ -155,7 +155,7 @@ p,
 span {
   font-size: 1.1rem;
   color: #e0e1dd;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 h2 {

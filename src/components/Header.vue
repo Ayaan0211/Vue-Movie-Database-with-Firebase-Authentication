@@ -39,7 +39,7 @@
 }
 
 .icons {
-  font-size: 60px;
+  font-size: 4rem;
   float: right;
   color: #1B263B;
   padding-right: 15px;
@@ -55,8 +55,8 @@ button {
 
 .login_button,
 .register_button {
-  height: 50px;
-  width: 90px;
+  height: 3rem;
+  width: 6rem;
   margin-right: 10px;
   margin-top: 5px;
   font-size: 16px;

@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import SiteModal from "../components/SiteModal.vue";
 const props = defineProps(["id"]);
 const store = useStore();
-await store.getMovies();
 
 </script>
 
@@ -14,6 +13,14 @@ await store.getMovies();
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Pacifico&family=Seymour+One&display=swap"
     rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <RouterLink to="/purchase" custom v-slot="{ navigate }">
+    <div class="back_button">
+      <i class="fa fa-arrow-left" aria-hidden="true" @click="navigate" role="link"></i>
+    </div>
+  </RouterLink>
 
   <h1 class="header">Cart</h1>
 
@@ -59,6 +66,21 @@ await store.getMovies();
   border-radius: 15px;
 }
 
+
+.fa {
+  font-size: 50px;
+  height: 50px;
+  float: right;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.back_button {
+  display: inline-block;
+  float: left;
+  padding-top: 10px;
+  padding-right: 10px;
+}
 
 .poster_image {
   display: block;
